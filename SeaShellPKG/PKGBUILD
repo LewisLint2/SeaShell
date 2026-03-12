@@ -1,0 +1,21 @@
+# Maintainer: Lewis Lint <your_email@example.com>
+pkgname=seashell
+pkgver=1.0
+pkgrel=1
+pkgdesc="Tiny, minimal, single-file shell"
+arch=('x86_64')
+url="https://github.com/LewisLint2/CShell"
+license=('GPL')
+depends=('readline')
+source=("SeaShell.c")
+sha256sums=('SKIP') # You can replace with actual sha256sum
+
+build() {
+    gcc -O2 -o SeaShell SeaShell.c -lreadline
+}
+
+package() {
+    install -Dm755 SeaShell "$pkgdir/usr/bin/SeaShell"
+    # Optional: add default history file
+    install -Dm644 /dev/null "$pkgdir/etc/seashell_history"
+}
