@@ -8,13 +8,19 @@
 #include <dirent.h>
 #include <errno.h>
 #include "linenoise.h"
+#include <signal.h>
 #define HISTORY_FILE ".seashellhist"
 #define MAX_ARGS 512
 #define MAX_CMDS 64
 #define MAX_LINE 8192
 
 char *last_command = NULL;
-
+void sigint_handler(int signo) {
+    // Just print a newline and redisplay prompt
+    // write(STDOUT_FILENO, "\n", 1);
+    (void)write(STDOUT_FILENO, "\n", 1);
+    linenoiseClearScreen();  // optional: clear current input line
+}
 struct command {
     char *argv[MAX_ARGS];
     char *input;
@@ -118,6 +124,7 @@ void execute_pipeline(struct command cmds[], int n) {
         pid_t pid = fork();
         if (pid < 0) { perror("fork"); exit(1); }
         if (pid == 0) { // child
+            signal(SIGINT, SIG_DFL);  // reset SIGINT to default in child
             if (i > 0) dup2(pipes[i-1][0], STDIN_FILENO);
             if (i < n-1) dup2(pipes[i][1], STDOUT_FILENO);
 
@@ -195,7 +202,7 @@ char *get_prompt() {
     static char prompt[MAX_LINE];
     char cwd[512], hostname[256];
 
-    getcwd(cwd, sizeof(cwd));
+    (void)getcwd(cwd, sizeof(cwd));
     gethostname(hostname, sizeof(hostname));
 
     char *user = getenv("USER");
@@ -216,6 +223,7 @@ void free_commands(struct command cmds[], int n) {
 }
 
 int main() {
+    signal(SIGINT, SIG_IGN);
     linenoiseSetCompletionCallback(completion);
     linenoiseSetMultiLine(1);  // enable multi-line editing for long commands
     linenoiseHistoryLoad(HISTORY_FILE);
