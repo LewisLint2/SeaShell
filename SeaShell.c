@@ -35,14 +35,17 @@ void expand_vars(char **arg) {
 }
 
 // Expand wildcards *, ?
+// Expand wildcards *, ? (works in directories too)
 void expand_glob(struct command *cmd) {
     glob_t g;
     char *newargv[MAX_ARGS];
     int argc = 0;
 
     for (int i = 0; cmd->argv[i]; i++) {
+        // Only try to glob if pattern contains * or ?
         if (strchr(cmd->argv[i], '*') || strchr(cmd->argv[i], '?')) {
-            if (glob(cmd->argv[i], GLOB_NOCHECK, NULL, &g) == 0) {
+            // Use flags to handle directories and ~ expansion
+            if (glob(cmd->argv[i], GLOB_NOCHECK | GLOB_MARK | GLOB_TILDE | GLOB_BRACE, NULL, &g) == 0) {
                 for (size_t j = 0; j < g.gl_pathc; j++)
                     newargv[argc++] = strdup(g.gl_pathv[j]);
                 globfree(&g);
@@ -53,6 +56,7 @@ void expand_glob(struct command *cmd) {
     }
     newargv[argc] = NULL;
 
+    // Free old argv
     for (int i = 0; cmd->argv[i]; i++) free(cmd->argv[i]);
     for (int i = 0; i <= argc; i++)
         cmd->argv[i] = newargv[i];
