@@ -2,7 +2,7 @@
 
 **SeaShell** is a **minimal, ultra-lightweight Unix shell** written entirely in C. Designed for **speed, portability, and learning**, it provides only the **essential shell functionality** without any bloat or luxury features.
 
-It is currently ~50KB, making it **tiny enough to be portable** on almost any Unix system, while still being **fully functional** for developers and Unix users, particularly those on **Arch Linux**.
+The current “micro” version is ~9.4 KB, making it **smaller than a children’s book** while still being **fully functional** for basic command execution and pipelines.
 
 ---
 
@@ -11,85 +11,93 @@ It is currently ~50KB, making it **tiny enough to be portable** on almost any Un
 SeaShell was created with two main goals:
 
 1. **Learning:** Understand how shells work at the system level by building a shell from scratch.
-2. **Speed & Minimalism:** Provide a tiny, indestructible shell that only does what’s necessary — no extra features, no bloat.
+2. **Minimalism & Speed:** Provide a shell that is **tiny, portable, and fast**, removing non-essential features.
+
+> **Note:** The small variant **does not include** history storage, advanced job control, or tab completion.
 
 ---
 
 ## Target Audience
 
-* Developers who want a **fast, minimal shell**.
-* Unix users who need **portable tools** across different systems.
-* Arch Linux users looking for a **tiny shell** to use during installations or minimal setups.
+* Developers and hobbyists who want a **fast, tiny shell**.
+* Users needing **portable Unix tools** for minimal installations.
+* Arch Linux users building **tiny environments or ISO setups**.
 
 ---
 
 ## Design Philosophy
 
-* **Minimalism:** Only essential features are included.
-* **No luxury:** No aliases, scripting, or auto-suggestions beyond basic tab completion.
-* **Portability:** Written in 100% C with minimal dependencies.
-* **Speed & Efficiency:** Quick startup and execution, suitable for tiny environments or ISO builds.
-* **Indestructible:** Robust handling of errors and processes with a simple, readable codebase.
+* **Extreme Minimalism:** Only core shell features are included.
+* **No “luxury” features:** Advanced history, scripting, or tab completion are stripped for size.
+* **Portability:** Written in pure C with minimal system calls.
+* **Speed & Efficiency:** Quick startup and execution. Perfect for constrained environments.
+* **Readable Code:** Despite being tiny, the codebase remains understandable for educational purposes.
 
 ---
 
-## Features
+## Features (Smaller Variant)
 
-* **Command Execution:** Run programs, scripts, and built-ins.
-* **Pipelines:** Chain commands with `|`.
-* **Input/Output Redirection:** `<`, `>`, and `>>`.
-* **Background Execution:** Run commands in the background with `&`.
-* **Tab Completion:** Auto-complete files and commands in `$PATH`.
-* **Environment Variable Expansion:** Supports `$HOME` and other variables.
-* **Wildcard Expansion:** `*` and `?` for files and directories.
-* **Multi-line Editing:** Support for long commands spanning multiple lines.
-* **Command History:** Stored in `.seashellhist` for recall and repeat (`!!`).
-* **Prompt Customization:** Shows `user@host:cwd$` or `#` for root.
+* **Command Execution:** Run programs and built-ins.
+* **Pipelines:** Chain commands using `|`.
+* **Input/Output Redirection:** Supports `<`, `>`, `>>`.
+* **Background Execution:** Commands can run in the background with `&`.
+* **Prompt:** Displays `user@host:cwd$` (or `#` for root).
+
+> **Excluded in micro version:**
+>
+> * Command history (`!!`)
+> * Tab completion
+> * Environment variable expansion (`$VAR`)
+> * Wildcard expansion (`*`, `?`)
+> * Multi-line editing
 
 ---
 
 ## Requirements
 
-* Unix-like system (Linux, macOS, BSD)
+* Unix-like system (Linux, BSD; minimal POSIX environment)
 * GCC or another C compiler
-* [`linenoise`](https://github.com/antirez/linenoise) library for line editing and history
+
+> **Note:** No external libraries are needed for the micro variant.
 
 ---
 
 ## Compilation
 
+For the **micro variant**:
+
 ```bash
-gcc -o SeaShell seashell.c -lreadline
+gcc -nostdlib -static seashell.c -o seashell
 ```
 
-Make sure `linenoise.h` and `linenoise.c` are included in your project directory.
+> This builds a **standalone binary ~9.4 KB**. No `linenoise` or `readline` required.
 
 ---
 
 ## Usage
 
 ```bash
-./SeaShell
+./seashell
 ```
 
 ### Examples
 
 ```bash
-ls -la                 # List all files
-cat file.txt | grep foo # Pipeline
-echo $HOME             # Environment variable expansion
-cd /path/to/dir        # Change directory
-command &               # Run in background
-!!                      # Repeat last command
+ls -la                # List files
+cat file.txt | grep x  # Use a pipeline
+cd /path/to/dir       # Change directory
+command &              # Run in background
 ```
+
+> Everything else (history, tab completion, variable expansion) **won’t work** in this variant.
 
 ---
 
 ## Notes
 
-* SeaShell is **purposefully minimal** — it excludes scripting, advanced job control, or aliases.
-* Designed for use during **Arch Linux installations** or **tiny Unix environments**.
-* Focused on being **portable, fast, and tiny**, while leaving the source code open for anyone to use.
+* SeaShell is **ultra-minimal** and suitable for **tiny environments or rescue systems**.
+* The small binary is **easily portable** across Linux systems.
+* Ideal for **learning** how shells execute commands and handle pipelines.
 
 ---
 
