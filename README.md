@@ -198,7 +198,7 @@ command &               # Run in background (I am still trying to figure this ou
 
 ---
 
-## **WHAT I INTEND ***NOT*** TO DO**
+## **What I intend ***not*** to do**
 
 1. Add persistant history
 2. Bloat SeaShell by too much
