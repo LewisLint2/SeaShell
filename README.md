@@ -13,7 +13,7 @@ SeaShell was created with two main goals:
 1. **Learning:** Understand how shells work at the system level by building a shell from scratch.
 2. **Minimalism & Speed:** Provide a shell that is **tiny, portable, and fast**, removing non-essential features.
 
-> **Note:** The small variant **does not include** history storage, advanced job control, or tab completion.
+> **Note:** The micro variant **does not include** history storage, advanced job control, or tab completion.
 
 ---
 
@@ -30,12 +30,12 @@ SeaShell was created with two main goals:
 * **Extreme Minimalism:** Only core shell features are included.
 * **No “luxury” features:** Advanced history, scripting, or tab completion are stripped for size.
 * **Portability:** Written in pure C with minimal system calls.
-* **Speed & Efficiency:** Quick startup and execution. Perfect for constrained environments.
+* **Speed & Efficiency:** Quick startup and execution, perfect for constrained environments.
 * **Readable Code:** Despite being tiny, the codebase remains understandable for educational purposes.
 
 ---
 
-## Features (Smaller Variant)
+## Features (Micro Variant)
 
 * **Command Execution:** Run programs and built-ins.
 * **Pipelines:** Chain commands using `|`.
@@ -74,6 +74,30 @@ gcc -nostdlib -static seashell.c -o seashell
 
 ---
 
+## Install Instructions
+
+1. **Compile the micro variant:**
+
+```bash
+gcc -nostdlib -static seashell.c -o seashell
+```
+
+2. **Move to a system-wide path (optional):**
+
+```bash
+sudo mv seashell /usr/local/bin/
+```
+
+3. **Run it:**
+
+```bash
+seashell
+```
+
+> Now you have the tiny shell available system-wide.
+
+---
+
 ## Usage
 
 ```bash
@@ -83,21 +107,33 @@ gcc -nostdlib -static seashell.c -o seashell
 ### Examples
 
 ```bash
-ls -la                # List files
-cat file.txt | grep x  # Use a pipeline
-cd /path/to/dir       # Change directory
-command &              # Run in background
+ls -la                 # List all files
+cat file.txt | grep x   # Use a pipeline
+cd /path/to/dir        # Change directory
+command &               # Run in background
 ```
 
-> Everything else (history, tab completion, variable expansion) **won’t work** in this variant.
+> Features like history, tab completion, and variable expansion are **not included** in this micro variant.
 
 ---
 
 ## Notes
 
 * SeaShell is **ultra-minimal** and suitable for **tiny environments or rescue systems**.
-* The small binary is **easily portable** across Linux systems.
+* The micro binary is **easily portable** across Linux systems.
 * Ideal for **learning** how shells execute commands and handle pipelines.
+
+---
+
+## Comparison (Optional)
+
+| Feature            | Full Version | Micro Variant |
+| ------------------ | ------------ | ------------- |
+| Command History    | Yes          | No            |
+| Tab Completion     | Yes          | No            |
+| Variable Expansion | Yes          | No            |
+| Multi-line Editing | Yes          | No            |
+| Binary Size        | ~50 KB       | ~9.4 KB       |
 
 ---
 
