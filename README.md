@@ -77,12 +77,11 @@ gcc -nostdlib -static seashell.c -o SeaShell
 ## Install Instructions
 1. **Download '*nolibc*'**
 ```bash
-git clone https://git.kernel.org/pub/scm/linux/libs/nolibc/nolibc.git
-git clone https://git.kernel.org/pub/scm/linux/libs/nolibc/nolibc.git
-git clone https://github.com/torvalds/linux.git --depth=1
-cd linux
-git sparse-checkout init --cone
-git sparse-checkout set tools/include/nolibc
+# download Linux 6.7 source
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.7.tar.xz
+
+# extract only the nolibc folder
+tar -xJf linux-6.7.tar.xz linux-6.7/tools/include/nolibc
 ```
 2. **Compile and install the micro variant:**
 
@@ -90,7 +89,7 @@ git sparse-checkout set tools/include/nolibc
 curl -O https://raw.githubusercontent.com/LewisLint2/SeaShell/main/seashell.c
 # there are no dependancies for the 9KB version, so you can just download the file dirrectly
 # In this case, Git isn’t needed; curl works fine
-gcc -nostdlib -static -I/path/to/linux/tools/include/nolibc -Os seashell.c -o SeaShell
+gcc -nostdlib -static -I linux-6.7/tools/include/nolibc -Os seashell.c -o SeaShell
 # -I for path to the tools. you will find a linux folder in your current directory if you havent CD'd anywhere after downloading nolibc
 # -Os strips the file down
 # -nostdlib because we are using nolibc
@@ -100,9 +99,9 @@ gcc -nostdlib -static -I/path/to/linux/tools/include/nolibc -Os seashell.c -o Se
 3. **Compress *SeaShell* with *upx* using LZMA algorithm**
 
 ```bash
-upx --best --lzma SeaShell
-# --best for best effort for maximum compression
-# --lzma for LZMA compression; very efficient compression
+upx --best --ultra-brute SeaShell
+# --ultra-brute, i know this sounds fake, but it's in both their --help function and thehir docs
+# --lzma for LZMA algorithm; very efficient compression
 ```
 
 4. **Move to a system-wide path:**
