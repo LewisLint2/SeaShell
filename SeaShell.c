@@ -1,3 +1,6 @@
+#define _GNU_SOURCE  // MUST be the first line
+#include <stdio.h>
+#include <glob.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,7 +16,9 @@
 #define MAX_ARGS 512
 #define MAX_CMDS 64
 #define MAX_LINE 8192
-
+#ifndef GLOB_BRACE
+#define GLOB_BRACE 0  // If the system doesn't have it, just treat it as 0
+#endif
 char *last_command = NULL;
 void sigint_handler(int signo) {
     // Just print a newline and redisplay prompt
